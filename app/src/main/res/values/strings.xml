@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Admin_Workforce</string>
+    <string name="home"> Available Jobs</string>
+    <string name="progress">In Progress</string>
+    <string name="completed">Completed</string>
+    <string name="report">Report</string>
+</resources>
