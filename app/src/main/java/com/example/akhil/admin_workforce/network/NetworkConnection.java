@@ -4,11 +4,13 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.akhil.admin_workforce.extras.DataClass;
 
 import org.json.JSONArray;
@@ -16,7 +18,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by akhil on 26/01/17.
@@ -24,7 +28,7 @@ import java.util.List;
 
 public class NetworkConnection {
     private Context context;
-static List<DataClass> mList;
+ private List<DataClass> mList;
    public NetworkConnection(Context context){
         this.context=context;
 
@@ -58,45 +62,45 @@ private  void login(){
 
 }
 
-   public void getJobData(){
-       mList=new ArrayList<DataClass>();
-     //  pd.setMessage("Fetching data..");
-      // pd.show();
+   public void getJobData(final String status) {
+       mList = new ArrayList<DataClass>();
+       //  pd.setMessage("Fetching data..");
+       // pd.show();
+       final String temp = status;
        String mDataFetchUrl = "http://www.avipsr.96.lt/test.php";
-       Log.v(".....","get");
+       Log.v(".....", "get");
 
-
-
-
-
-       JsonArrayRequest jsonArrayReq= new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, mDataFetchUrl, new Response.Listener<String>() {
            @Override
-           public void onResponse(JSONArray response) {
-             //  pd.dismiss();
-               Log.v(".......",response.toString());
-for(int i=0;i<response.length();i++){
-   try {
-        JSONObject workerJob=response.getJSONObject(i);
-        String id= workerJob.getString("id");
-        String job=workerJob.getString("work_detail");
-       String locationId=workerJob.getString("location_id");
-       String designationId=workerJob.getString("designation_id");
-        DataClass dataClass=new DataClass();
-        dataClass.setJobId(id);
-        dataClass.setJobTitle(job);
-       dataClass.setLocationId(locationId);
-       dataClass.setDesignationId(designationId);
-        mList.add(dataClass);
-       Log.v("mlist",mList.toString());
-        Log.v("......",id+job);
-        DataClass da=new DataClass();
-        da.setmList(mList);
+           public void onResponse(String response) {
+               try {
+                   JSONArray jsonArray = new JSONArray(response);
+                   try {
+                       for (int i = 0; i < jsonArray.length(); i++) {
+                           JSONObject workerJob = jsonArray.getJSONObject(i);
+                           String id = workerJob.getString("id");
+                           String job = workerJob.getString("work_detail");
+                           String locationId = workerJob.getString("location_id");
+                           String designationId = workerJob.getString("designation_id");
+                           DataClass dataClass = new DataClass();
+                           dataClass.setJobId(id);
+                           dataClass.setJobTitle(job);
+                           dataClass.setLocationId(locationId);
+                           dataClass.setDesignationId(designationId);
+                           mList.add(dataClass);
+                           Log.v("mlist", mList.toString());
+                           Log.v("......", id + job);
+                           DataClass da = new DataClass();
+                           da.setmList(mList);
 
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-
-}
+                       }
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+//
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
 
            }
        }, new Response.ErrorListener() {
@@ -104,29 +108,48 @@ for(int i=0;i<response.length();i++){
            public void onErrorResponse(VolleyError error) {
 
            }
-       });
-       AppController.getInstance().addToRequestQueue(jsonArrayReq);
-      // return mList;
+       }){
+           @Override
+           protected Map<String, String> getParams() throws AuthFailureError {
+               Map<String,String> params= new HashMap<>();
+               params.put("status",temp);
+
+               return params;
+           }
+       };
+
+
+       AppController.getInstance().addToRequestQueue(stringRequest);
 
    }
 
     public void searchWorker(){
         mList=new ArrayList<DataClass>();
-        String mDataFetchUrl = "http://www.avipsr.96.lt/workerlist.php";
+       // mList.clear();
+        String mDataFetchUrl = "http://www.avipsr.96.lt/worklist.php";
         Log.v(".....","list");
+
+
 JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
     @Override
     public void onResponse(JSONArray response) {
+        Log.v("res code",response.toString());
+        Log.v("json length", String.valueOf(response.length()));
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObject =response.getJSONObject(i);
                 String id=jsonObject.getString("id");
+                Log.v("json id",id);
                 String name=jsonObject.getString("name");
+                String locationId=jsonObject.getString("location_id");
+                String designationId=jsonObject.getString("designation_id");
                 DataClass dataClass=new DataClass();
                 dataClass.setWorkerId(id);
                 dataClass.setWorkerName(name);
+                dataClass.setLocationId(locationId);
+                dataClass.setDesignationId(designationId);
                 mList.add(dataClass);
-                dataClass.setmList(mList);
+                dataClass.setwList(mList);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -135,9 +158,61 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
 }, new Response.ErrorListener() {
     @Override
     public void onErrorResponse(VolleyError error) {
+        Log.v("code",error.getMessage());
 
     }
 });
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
     }
+
+   public void getWorkerData(final String id, String mDataFetchUrl){
+
+
+       JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
+           @Override
+           public void onResponse(JSONArray response) {
+               for (int i = 0; i < response.length(); i++) {
+                   try {
+                       JSONObject jsonObject =response.getJSONObject(i);
+                       String id=jsonObject.getString("id");
+                       Log.v("json id",id);
+                       String name=jsonObject.getString("name");
+                       String locationId=jsonObject.getString("location_id");
+                       String designationId=jsonObject.getString("designation_id");
+
+                       DataClass dataClass=new DataClass();
+                       dataClass.setWorkerId(id);
+                       dataClass.setWorkerName(name);
+                       dataClass.setLocationId(locationId);
+                       dataClass.setDesignationId(designationId);
+                       if(jsonObject.has("work_detail")){
+                           String jobData=jsonObject.getString("work_detail");
+                           dataClass.setJobData(jobData);
+                       }
+                       mList.add(dataClass);
+                       dataClass.setmList(mList);
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+               }
+           }
+       }, new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+
+           }
+       }){
+           @Override
+           protected Map<String, String> getParams() throws AuthFailureError {
+               Map<String,String> params= new HashMap<>();
+               params.put("id",id);
+               return params;
+           }
+       };
+
+       AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+   }
+
+
+
 }

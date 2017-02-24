@@ -17,7 +17,7 @@ import com.example.akhil.admin_workforce.backendAdmin.JobDescription;
 import com.example.akhil.admin_workforce.extras.DataClass;
 import com.example.akhil.admin_workforce.extras.DividerItemDecoration;
 import com.example.akhil.admin_workforce.extras.FragmentInflater;
-import com.example.akhil.admin_workforce.extras.MyAdaptor;
+import com.example.akhil.admin_workforce.extras.JobListAdaptor;
 import com.example.akhil.admin_workforce.extras.RecyclerTouchListener;
 import com.example.akhil.admin_workforce.network.NetworkConnection;
 
@@ -40,8 +40,9 @@ public class AdminHome extends Fragment {
       //  RecyclerView.LayoutManager mLayout = new LinearLayoutManager(getContext());
         homeList = (RecyclerView) view.findViewById(R.id.homelist);
         homeList.setLayoutManager(new LinearLayoutManager(getContext()));
-        networkConnection.getJobData();
-        adapter=new MyAdaptor(dataClass.getmList());
+        String status="A";
+        networkConnection.getJobData(status);
+        adapter=new JobListAdaptor(dataClass.getmList());
         Log.d("adaptor....", String.valueOf(adapter.getItemCount()));
         homeList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
         homeList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), homeList, new RecyclerTouchListener.ClickListener() {

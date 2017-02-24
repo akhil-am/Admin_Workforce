@@ -9,11 +9,16 @@ import java.util.List;
 
 public class DataClass {
     String jobId;
-    String JobTitle,locationId,designationId,workerId,workerName;
-     static List<DataClass> mList=new ArrayList<>();
-
+    String JobTitle,locationId,designationId,workerId,workerName,JobData;
+     private static List<DataClass> mList=new ArrayList<>();
+    static List<DataClass> dummy=new ArrayList<DataClass>();
+    static List<DataClass> wList=new ArrayList<>();
     public String getJobId() {
         return jobId;
+    }
+
+    public String getJobData() {
+        return JobData;
     }
 
     public String getJobTitle() {
@@ -38,6 +43,10 @@ public class DataClass {
 
     public void setJobId(String jobId) {
         this.jobId = jobId;
+    }
+
+    public void setJobData(String jobData) {
+        JobData = jobData;
     }
 
     public void setJobTitle(String jobTitle) {
@@ -66,5 +75,21 @@ public class DataClass {
 
     public void setmList(List<DataClass> mList) {
         this.mList = mList;
+    }
+
+    public List<DataClass> getDummy() {
+        return dummy;
+    }
+
+    public void setDummy(List<DataClass> dummy) {
+        this.dummy = dummy;
+    }
+
+    public  List<DataClass> getwList() {
+        return wList;
+    }
+
+    public  void setwList(List<DataClass> wList) {
+        DataClass.wList = wList;
     }
 }

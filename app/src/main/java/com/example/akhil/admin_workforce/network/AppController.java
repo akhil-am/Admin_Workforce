@@ -33,11 +33,19 @@ public class AppController extends Application {
         return mRequestQueue;
     }
 
+    public <T> void addToRequestQueue(Request<T> r, String tag) {
+        r.setTag(TAG);
+        getRequestQueue().add(r);
 
+    }
 
+//public void addToRequestQueue(Request<T>,rq,){
+//
+//}
     public <T> void addToRequestQueue(Request<T> req) {
         req.setTag(TAG);
         getRequestQueue().add(req);
+
     }
 
     public void cancelPendingRequests(Object tag) {

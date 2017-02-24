@@ -4,4 +4,6 @@
     <string name="progress">In Progress</string>
     <string name="completed">Completed</string>
     <string name="report">Report</string>
+    <string name="previous_works"><![CDATA[<< previous works]]></string>
+    <string name="assign_job"><![CDATA[assign job >>]]></string>
 </resources>
