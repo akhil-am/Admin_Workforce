@@ -20,6 +20,9 @@ import com.example.akhil.admin_workforce.extras.FragmentInflater;
 import com.example.akhil.admin_workforce.extras.JobListAdaptor;
 import com.example.akhil.admin_workforce.extras.RecyclerTouchListener;
 import com.example.akhil.admin_workforce.network.NetworkConnection;
+import com.example.akhil.admin_workforce.network.VolleyCallback;
+
+import java.util.List;
 
 /**
  * Created by akhil on 13/01/17.
@@ -31,24 +34,29 @@ public class AdminHome extends Fragment {
     NetworkConnection networkConnection=new NetworkConnection(getContext());
     DataClass dataClass=new DataClass();
     Fragment fragment=new JobDescription();
+    //List<DataClass> result=new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.admin_home,container,false);
 
-      //  RecyclerView.LayoutManager mLayout = new LinearLayoutManager(getContext());
         homeList = (RecyclerView) view.findViewById(R.id.homelist);
         homeList.setLayoutManager(new LinearLayoutManager(getContext()));
         String status="A";
-        networkConnection.getJobData(status);
-        adapter=new JobListAdaptor(dataClass.getmList());
-        Log.d("adaptor....", String.valueOf(adapter.getItemCount()));
+        networkConnection.getJobData(status, new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(final List<DataClass> result) {
+                adapter=new JobListAdaptor(result);
+                Log.d("adaptor....", String.valueOf(adapter.getItemCount()));
+
+
+
         homeList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
         homeList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), homeList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                DataClass id= dataClass.getmList().get(position);
+                DataClass id= result.get(position);
                 String mId=id.getJobId();
                 String mLocationId=id.getLocationId();
                 String mDesignationId=id.getDesignationId();
@@ -72,7 +80,8 @@ public class AdminHome extends Fragment {
             }
         }));
         homeList.setAdapter(adapter);
-    
+            }
+        });
         return view;
     }
 

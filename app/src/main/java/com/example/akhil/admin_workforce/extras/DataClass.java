@@ -11,7 +11,7 @@ public class DataClass {
     String jobId;
     String JobTitle,locationId,designationId,workerId,workerName,JobData;
      private static List<DataClass> mList=new ArrayList<>();
-    static List<DataClass> dummy=new ArrayList<DataClass>();
+     static List<DataClass> dummy=new ArrayList<DataClass>();
     static List<DataClass> wList=new ArrayList<>();
     public String getJobId() {
         return jobId;

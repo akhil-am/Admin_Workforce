@@ -27,8 +27,9 @@ import java.util.Map;
  */
 
 public class NetworkConnection {
+
     private Context context;
- private List<DataClass> mList;
+ public List<DataClass> mList;
    public NetworkConnection(Context context){
         this.context=context;
 
@@ -62,7 +63,7 @@ private  void login(){
 
 }
 
-   public void getJobData(final String status) {
+   public void getJobData(final String status, final VolleyCallback callback) {
        mList = new ArrayList<DataClass>();
        //  pd.setMessage("Fetching data..");
        // pd.show();
@@ -90,8 +91,9 @@ private  void login(){
                            mList.add(dataClass);
                            Log.v("mlist", mList.toString());
                            Log.v("......", id + job);
-                           DataClass da = new DataClass();
-                           da.setmList(mList);
+//                           DataClass da = new DataClass();
+//                           da.setmList(mList);
+
 
                        }
                    } catch (JSONException e) {
@@ -101,7 +103,7 @@ private  void login(){
                } catch (JSONException e) {
                    e.printStackTrace();
                }
-
+               callback.onSuccessResponse(mList);
            }
        }, new Response.ErrorListener() {
            @Override
@@ -123,7 +125,7 @@ private  void login(){
 
    }
 
-    public void searchWorker(){
+    public void searchWorker(final VolleyCallback callback){
         mList=new ArrayList<DataClass>();
        // mList.clear();
         String mDataFetchUrl = "http://www.avipsr.96.lt/worklist.php";
@@ -135,6 +137,7 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
     public void onResponse(JSONArray response) {
         Log.v("res code",response.toString());
         Log.v("json length", String.valueOf(response.length()));
+        DataClass dataClass=new DataClass();
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObject =response.getJSONObject(i);
@@ -143,17 +146,20 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
                 String name=jsonObject.getString("name");
                 String locationId=jsonObject.getString("location_id");
                 String designationId=jsonObject.getString("designation_id");
-                DataClass dataClass=new DataClass();
+
                 dataClass.setWorkerId(id);
                 dataClass.setWorkerName(name);
                 dataClass.setLocationId(locationId);
                 dataClass.setDesignationId(designationId);
                 mList.add(dataClass);
-                dataClass.setwList(mList);
-            } catch (JSONException e) {
+                //dataClass.setwList(mList);
+
+            }
+            catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        callback.onSuccessResponse(mList);
     }
 }, new Response.ErrorListener() {
     @Override
@@ -165,8 +171,8 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
     }
 
-   public void getWorkerData(final String id, String mDataFetchUrl){
-
+   public void getWorkerData(final String id, String mDataFetchUrl,final VolleyCallback callback){
+mList=new ArrayList<>();
 
        JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
            @Override
@@ -174,14 +180,14 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
                for (int i = 0; i < response.length(); i++) {
                    try {
                        JSONObject jsonObject =response.getJSONObject(i);
-                       String id=jsonObject.getString("id");
-                       Log.v("json id",id);
+                       String mId=jsonObject.getString("id");
+                       Log.v("json id",mId);
                        String name=jsonObject.getString("name");
                        String locationId=jsonObject.getString("location_id");
                        String designationId=jsonObject.getString("designation_id");
 
                        DataClass dataClass=new DataClass();
-                       dataClass.setWorkerId(id);
+                       dataClass.setWorkerId(mId);
                        dataClass.setWorkerName(name);
                        dataClass.setLocationId(locationId);
                        dataClass.setDesignationId(designationId);
@@ -190,11 +196,12 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
                            dataClass.setJobData(jobData);
                        }
                        mList.add(dataClass);
-                       dataClass.setmList(mList);
+                      // dataClass.setwList(mList);
                    } catch (JSONException e) {
                        e.printStackTrace();
                    }
                }
+               callback.onSuccessResponse(mList);
            }
        }, new Response.ErrorListener() {
            @Override

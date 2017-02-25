@@ -4,16 +4,16 @@
     android:layout_height="match_parent">
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/wd_Job_detail" />
+        <TextView
+            android:text="TextView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/c_Job_detail" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,12 +42,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_client_id" />
+                    android:id="@+id/c_client_id" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_name" />
+                    android:id="@+id/c_name" />
             </LinearLayout>
         </LinearLayout>
 
@@ -74,6 +74,11 @@
                     android:text="Accepted Time :"
                     android:layout_width="match_parent"
                     android:layout_height="50dp" />
+
+                <TextView
+                    android:text="Completed Time :"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -84,18 +89,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_designation" />
+                    android:id="@+id/c_designation" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_location" />
+                    android:id="@+id/c_location" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/acceptedtime"
+                    android:id="@+id/c_acceptedtime"
                     android:text="tobeadded" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/c_completedtime"/>
             </LinearLayout>
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
 </ScrollView>

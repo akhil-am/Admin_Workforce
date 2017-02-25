@@ -19,6 +19,9 @@ import com.example.akhil.admin_workforce.extras.FragmentInflater;
 import com.example.akhil.admin_workforce.extras.JobListAdaptor;
 import com.example.akhil.admin_workforce.extras.RecyclerTouchListener;
 import com.example.akhil.admin_workforce.network.NetworkConnection;
+import com.example.akhil.admin_workforce.network.VolleyCallback;
+
+import java.util.List;
 
 /**
  * Created by akhil on 17/01/17.
@@ -37,13 +40,16 @@ public class AdminProgress extends Fragment {
         pendingList = (RecyclerView) view.findViewById(R.id.homelist);
         pendingList.setLayoutManager(new LinearLayoutManager(getContext()));
         String status="P";
-        networkConnection.getJobData(status);
-        adapter=new JobListAdaptor(dataClass.getmList());
+        networkConnection.getJobData(status, new VolleyCallback() {
+            @Override
+            public void onSuccessResponse(final List<DataClass> result) {
+                adapter=new JobListAdaptor(result);
+
         pendingList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
         pendingList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), pendingList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                DataClass id= dataClass.getmList().get(position);
+                DataClass id= result.get(position);
                 String mId=id.getJobId();
                 String mLocationId=id.getLocationId();
                 String mDesignationId=id.getDesignationId();
@@ -65,6 +71,8 @@ public class AdminProgress extends Fragment {
             }
         }));
         pendingList.setAdapter(adapter);
+            }
+        });
         return view;
     }
 }
