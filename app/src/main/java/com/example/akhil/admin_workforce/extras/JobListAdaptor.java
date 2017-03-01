@@ -32,7 +32,7 @@ import java.util.List;
     public void onBindViewHolder(MyViewHolder holder, int position) {
         DataClass dataclass= jobData.get(position);
         Log.d("jobdata",jobData.toString()+position);
-        holder.id.setText(dataclass.getJobId());
+        //holder.id.setText(dataclass.getJobId());
         holder.jobTitle.setText(dataclass.getJobTitle());
     }
 
@@ -45,7 +45,7 @@ import java.util.List;
         TextView id;TextView jobTitle;
         public MyViewHolder(View itemView) {
             super(itemView);
-            id = (TextView) itemView.findViewById(R.id.jobid);
+           // id = (TextView) itemView.findViewById(R.id.jobid);
             jobTitle = (TextView) itemView.findViewById(R.id.jobtitle);
         }
     }

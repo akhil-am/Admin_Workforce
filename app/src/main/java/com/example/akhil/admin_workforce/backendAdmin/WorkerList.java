@@ -54,6 +54,8 @@ public class WorkerList extends Fragment {
 
         mLocationId=getArguments().getString("locationId");
         mDesignationId=getArguments().getString("designationId");
+        Log.v("mLocationId",mLocationId);
+        Log.v("mDesignationId",mDesignationId);
         networkConnection.searchWorker(new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
@@ -63,12 +65,12 @@ public class WorkerList extends Fragment {
                 for (int i =0;i<result.size();i++){
                     data=result.get(i);
 
-//                    Log.v("data", String.valueOf(result.get(i).getWorkerId()));
+                   Log.v("data", String.valueOf(result.get(i).getWorkerId()));
 //                    Log.v("mid",mId);
 //                    Log.v("mlocation",mDesignationId);
 //                    Log.v("mdes",mDesignationId);
 
-                    if (data.getLocationId().equals(mLocationId)&&data.getDesignationId().equals(mDesignationId)) {
+                    if ((data.getLocationId().equals(mLocationId))&&(data.getDesignationId().equals(mDesignationId))) {
 
                         String id = data.getWorkerId();
                         String name = data.getWorkerName();

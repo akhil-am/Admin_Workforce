@@ -20,7 +20,7 @@ import com.example.akhil.admin_workforce.network.NetworkConnection;
  */
 
 public class JobDescription extends Fragment {
-    String mLocationId,mDesignationId,mId;NetworkConnection networkConnection=new NetworkConnection(getContext());DataClass dataClass=new DataClass();
+    String mLocationId,mDesignationId,mId,mJobDes;NetworkConnection networkConnection=new NetworkConnection(getContext());DataClass dataClass=new DataClass();
    Bundle bundle=new Bundle();
     @Nullable
     @Override
@@ -30,8 +30,9 @@ public class JobDescription extends Fragment {
         mId=getArguments().getString("id");
         mLocationId=getArguments().getString("locationId");
         mDesignationId=getArguments().getString("designationId");
+        mJobDes=getArguments().getString("jobdes");
         Button search= (Button) view.findViewById(R.id.search_worker);
-            textView.setText(mId);
+            textView.setText(mJobDes);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

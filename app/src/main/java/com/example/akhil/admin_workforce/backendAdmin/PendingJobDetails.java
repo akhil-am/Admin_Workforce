@@ -38,11 +38,11 @@ public class PendingJobDetails extends Fragment {
                 Log.v("size of result", String.valueOf(result.size()));
                 DataClass data=result.get(0);
 
-        TextView jobData= (TextView) view.findViewById(R.id.wd_Job_detail);
-        TextView workerId= (TextView) view.findViewById(R.id.wd_client_id);
-        TextView workerName= (TextView) view.findViewById(R.id.wd_name);
-        TextView workerLoc= (TextView) view.findViewById(R.id.wd_location);
-        TextView workerDes= (TextView) view.findViewById(R.id.wd_designation);
+        TextView jobData= (TextView) view.findViewById(R.id.p_Job_detail);
+        TextView workerId= (TextView) view.findViewById(R.id.p_client_id);
+        TextView workerName= (TextView) view.findViewById(R.id.p_name);
+        TextView workerLoc= (TextView) view.findViewById(R.id.p_location);
+        TextView workerDes= (TextView) view.findViewById(R.id.p_designation);
         jobData.setText(data.getJobData());
         workerId.setText(data.getWorkerId());
         workerName.setText(data.getWorkerName());

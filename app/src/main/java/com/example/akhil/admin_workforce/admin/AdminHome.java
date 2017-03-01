@@ -60,11 +60,13 @@ public class AdminHome extends Fragment {
                 String mId=id.getJobId();
                 String mLocationId=id.getLocationId();
                 String mDesignationId=id.getDesignationId();
+                String mJobDes=id.getJobDes();
 //                Intent intent=new Intent(getActivity(), JobDescription.class);
 //                intent.putExtra("id",mId);
 //                startActivity(intent);
                 Bundle bundle=new Bundle();
                 bundle.putString("id",mId);
+                bundle.putString("jobdes",mJobDes);
                 bundle.putString("locationId",mLocationId);
                 bundle.putString("designationId",mDesignationId);
                 fragment.setArguments(bundle);

@@ -13,7 +13,7 @@
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:id="@+id/wd_Job_detail" />
+        android:id="@+id/p_Job_detail" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,12 +42,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_client_id" />
+                    android:id="@+id/p_client_id" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_name" />
+                    android:id="@+id/p_name" />
             </LinearLayout>
         </LinearLayout>
 
@@ -84,16 +84,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_designation" />
+                    android:id="@+id/p_designation" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/wd_location" />
+                    android:id="@+id/p_location" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:id="@+id/acceptedtime"
+                    android:id="@+id/p_acceptedtime"
                     android:text="tobeadded" />
             </LinearLayout>
         </LinearLayout>

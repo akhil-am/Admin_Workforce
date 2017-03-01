@@ -80,17 +80,19 @@ private  void login(){
                        for (int i = 0; i < jsonArray.length(); i++) {
                            JSONObject workerJob = jsonArray.getJSONObject(i);
                            String id = workerJob.getString("id");
-                           String job = workerJob.getString("work_detail");
+                           String jobTitle=workerJob.getString("work_title");
+                           String jobDetail = workerJob.getString("work_detail");
                            String locationId = workerJob.getString("location_id");
                            String designationId = workerJob.getString("designation_id");
                            DataClass dataClass = new DataClass();
                            dataClass.setJobId(id);
-                           dataClass.setJobTitle(job);
+                           dataClass.setJobTitle(jobTitle);
+                           dataClass.setJobDes(jobDetail);
                            dataClass.setLocationId(locationId);
                            dataClass.setDesignationId(designationId);
                            mList.add(dataClass);
                            Log.v("mlist", mList.toString());
-                           Log.v("......", id + job);
+                           Log.v("......", id + jobDetail);
 //                           DataClass da = new DataClass();
 //                           da.setmList(mList);
 
@@ -137,7 +139,7 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
     public void onResponse(JSONArray response) {
         Log.v("res code",response.toString());
         Log.v("json length", String.valueOf(response.length()));
-        DataClass dataClass=new DataClass();
+
         for (int i = 0; i < response.length(); i++) {
             try {
                 JSONObject jsonObject =response.getJSONObject(i);
@@ -146,7 +148,7 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
                 String name=jsonObject.getString("name");
                 String locationId=jsonObject.getString("location_id");
                 String designationId=jsonObject.getString("designation_id");
-
+                DataClass dataClass=new DataClass();
                 dataClass.setWorkerId(id);
                 dataClass.setWorkerName(name);
                 dataClass.setLocationId(locationId);
