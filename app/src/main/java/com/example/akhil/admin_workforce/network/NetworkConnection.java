@@ -175,13 +175,17 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
 
    public void getWorkerData(final String id, String mDataFetchUrl,final VolleyCallback callback){
 mList=new ArrayList<>();
+Log.v("last id",id);
 
-       JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
+       StringRequest stringRequest=new StringRequest(Request.Method.POST, mDataFetchUrl, new Response.Listener<String>() {
            @Override
-           public void onResponse(JSONArray response) {
-               for (int i = 0; i < response.length(); i++) {
-                   try {
-                       JSONObject jsonObject =response.getJSONObject(i);
+           public void onResponse(String response) {
+               Log.v("pending response",response);
+               try {
+                   JSONArray jsonArray = new JSONArray(response);
+
+                   for (int i=0; i<jsonArray.length();i++){
+                       JSONObject jsonObject=jsonArray.getJSONObject(i);
                        String mId=jsonObject.getString("id");
                        Log.v("json id",mId);
                        String name=jsonObject.getString("name");
@@ -198,10 +202,9 @@ mList=new ArrayList<>();
                            dataClass.setJobData(jobData);
                        }
                        mList.add(dataClass);
-                      // dataClass.setwList(mList);
-                   } catch (JSONException e) {
-                       e.printStackTrace();
                    }
+               } catch (JSONException e) {
+                   e.printStackTrace();
                }
                callback.onSuccessResponse(mList);
            }
@@ -218,9 +221,72 @@ mList=new ArrayList<>();
                return params;
            }
        };
-
-       AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+       AppController.getInstance().addToRequestQueue(stringRequest);
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//    JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
+//           @Override
+//           public void onResponse(JSONArray response) {
+//               Log.v("last work", String.valueOf(response));
+//               for (int i = 0; i < response.length(); i++) {
+//                   try {
+//                       JSONObject jsonObject =response.getJSONObject(i);
+//                       String mId=jsonObject.getString("id");
+//                       Log.v("json id",mId);
+//                       String name=jsonObject.getString("name");
+//                       String locationId=jsonObject.getString("location_id");
+//                       String designationId=jsonObject.getString("designation_id");
+//
+//                       DataClass dataClass=new DataClass();
+//                       dataClass.setWorkerId(mId);
+//                       dataClass.setWorkerName(name);
+//                       dataClass.setLocationId(locationId);
+//                       dataClass.setDesignationId(designationId);
+//                       if(jsonObject.has("work_detail")){
+//                           String jobData=jsonObject.getString("work_detail");
+//                           dataClass.setJobData(jobData);
+//                       }
+//                       mList.add(dataClass);
+//                      // dataClass.setwList(mList);
+//                   } catch (JSONException e) {
+//                       e.printStackTrace();
+//                   }
+//               }
+//               callback.onSuccessResponse(mList);
+//           }
+//       }, new Response.ErrorListener() {
+//           @Override
+//           public void onErrorResponse(VolleyError error) {
+//
+//           }
+//       }){
+//           @Override
+//           protected Map<String, String> getParams() throws AuthFailureError {
+//               Map<String,String> params= new HashMap<>();
+//               params.put("id",id);
+//               return params;
+//           }
+//       };
+//
+//       AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+//   }
 
 
 

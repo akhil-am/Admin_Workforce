@@ -31,7 +31,7 @@ public class WorkerListAdaptor extends RecyclerView.Adapter<WorkerListAdaptor.My
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         DataClass dataclass= workerList.get(position);
-        holder.id.setText(dataclass.getWorkerId());
+       // holder.id.setText(dataclass.getWorkerId());
         holder.jobTitle.setText(dataclass.getWorkerName());
     }
 
@@ -44,7 +44,7 @@ public class WorkerListAdaptor extends RecyclerView.Adapter<WorkerListAdaptor.My
         TextView id;TextView jobTitle;
         public MyViewHolder(View itemView) {
             super(itemView);
-            id = (TextView) itemView.findViewById(R.id.jobid);
+           // id = (TextView) itemView.findViewById(R.id.jobid);
             jobTitle = (TextView) itemView.findViewById(R.id.jobtitle);
         }
     }

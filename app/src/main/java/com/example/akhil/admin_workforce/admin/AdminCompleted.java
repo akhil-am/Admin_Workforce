@@ -66,9 +66,10 @@ public class AdminCompleted extends Fragment {
 
                     }
                 }));
+                completedList.setAdapter(adapter);
             }
         });
-        completedList.setAdapter(adapter);
+
         return view;
     }
 
