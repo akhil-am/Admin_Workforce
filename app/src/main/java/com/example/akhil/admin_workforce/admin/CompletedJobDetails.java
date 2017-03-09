@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.admin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,9 +27,12 @@ public class CompletedJobDetails extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view=inflater.inflate(R.layout.completed_job_detail,container,false);
         String mid=getArguments().getString("id");
+        final ProgressDialog dialog=new ProgressDialog(getActivity());
+        dialog.setTitle("please wait....");dialog.show();
         networkConnection.getWorkerData(mid, mUrl, new VolleyCallback() {
             @Override
             public void onSuccessResponse(List<DataClass> result) {
+                dialog.dismiss();
                 Log.v("size of result", String.valueOf(result.size()));
                 DataClass data=result.get(0);
 

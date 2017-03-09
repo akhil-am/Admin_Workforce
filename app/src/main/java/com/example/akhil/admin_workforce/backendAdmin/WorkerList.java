@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.backendAdmin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -56,10 +57,12 @@ public class WorkerList extends Fragment {
         mDesignationId=getArguments().getString("designationId");
         Log.v("mLocationId",mLocationId);
         Log.v("mDesignationId",mDesignationId);
+      final  ProgressDialog dialog= new ProgressDialog(getContext());
+        dialog.setTitle("please wait....");dialog.show();
         networkConnection.searchWorker(new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
-
+dialog.dismiss();
                 dummy=new ArrayList<DataClass>();
                 DataClass data=new DataClass();
                 for (int i =0;i<result.size();i++){

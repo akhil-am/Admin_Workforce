@@ -1,6 +1,7 @@
 package com.example.akhil.admin_workforce.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -11,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.akhil.admin_workforce.admin.AdminMain;
 import com.example.akhil.admin_workforce.extras.DataClass;
 
 import org.json.JSONArray;
@@ -45,6 +47,8 @@ private  void login(){
             try {
                 Boolean mResponse= response.getBoolean("code");
                 if(mResponse){
+                    Intent intent = new Intent(context, AdminMain.class);
+                    context.startActivity(intent);
                     // code to next activity
                 }
                 else Toast.makeText(context, "login failed", Toast.LENGTH_SHORT).show();
@@ -63,7 +67,7 @@ private  void login(){
 
 }
 
-   public void getJobData(final String status, final VolleyCallback callback) {
+   public void getJobData(final String status, final String id, final VolleyCallback callback) {
        mList = new ArrayList<DataClass>();
        //  pd.setMessage("Fetching data..");
        // pd.show();
@@ -75,6 +79,8 @@ private  void login(){
            @Override
            public void onResponse(String response) {
                try {
+
+                   Log.v("JobData response",response);
                    JSONArray jsonArray = new JSONArray(response);
                    try {
                        for (int i = 0; i < jsonArray.length(); i++) {
@@ -117,7 +123,7 @@ private  void login(){
            protected Map<String, String> getParams() throws AuthFailureError {
                Map<String,String> params= new HashMap<>();
                params.put("status",temp);
-
+              params.put("id",id);
                return params;
            }
        };

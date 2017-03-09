@@ -34,6 +34,7 @@ import java.util.List;
         Log.d("jobdata",jobData.toString()+position);
         //holder.id.setText(dataclass.getJobId());
         holder.jobTitle.setText(dataclass.getJobTitle());
+
     }
 
     @Override

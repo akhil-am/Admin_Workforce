@@ -1,6 +1,5 @@
-package com.example.akhil.admin_workforce.admin;
+package com.example.akhil.admin_workforce.backendAdmin;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,41 +23,33 @@ import com.example.akhil.admin_workforce.network.VolleyCallback;
 import java.util.List;
 
 /**
- * Created by akhil on 17/01/17.
+ * Created by akhil on 08/03/17.
  */
 
-public class AdminCompleted extends Fragment {
-    RecyclerView completedList;
+public class PreviousJob extends Fragment {
+    RecyclerView previous;
     RecyclerView.Adapter adapter;
     NetworkConnection networkConnection=new NetworkConnection(getContext());
-    Fragment fragment=new CompletedJobDetails();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.admin_home,container,false);
-        completedList = (RecyclerView) view.findViewById(R.id.homelist);
-        completedList.setLayoutManager(new LinearLayoutManager(getContext()));
-        String status="C";
-        final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
-        networkConnection.getJobData(status,null, new VolleyCallback() {
+        previous = (RecyclerView) view.findViewById(R.id.homelist);
+        previous.setLayoutManager(new LinearLayoutManager(getContext()));
+        networkConnection.getJobData("C", getArguments().getString("id"), new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
-                dialog.dismiss();
                 adapter=new JobListAdaptor(result);
-                completedList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
-                completedList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), completedList, new RecyclerTouchListener.ClickListener() {
+                previous.setAdapter(adapter);
+                previous.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
+                previous.addOnItemTouchListener(new RecyclerTouchListener(getContext(), previous, new RecyclerTouchListener.ClickListener() {
                     @Override
                     public void onClick(View view, int position) {
                         DataClass id= result.get(position);
-                        String mId=id.getJobId();
-                        String mLocationId=id.getLocationId();
-                        String mDesignationId=id.getDesignationId();
-
+                        String mJobDes=id.getJobDes();
                         Bundle bundle=new Bundle();
-                        bundle.putString("id",mId);
-                        // bundle.putString("locationId",mLocationId);
-                        // bundle.putString("designationId",mDesignationId);
+                        Fragment fragment=new PreviousJob();
                         fragment.setArguments(bundle);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentInflater fragmentInflater=new FragmentInflater(getContext(), fragment,fragmentManager);
@@ -70,13 +61,8 @@ public class AdminCompleted extends Fragment {
 
                     }
                 }));
-                completedList.setAdapter(adapter);
-
             }
         });
-
         return view;
     }
-
-
 }

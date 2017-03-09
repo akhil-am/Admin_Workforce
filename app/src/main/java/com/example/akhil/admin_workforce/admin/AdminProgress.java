@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.admin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,9 +41,12 @@ public class AdminProgress extends Fragment {
         pendingList = (RecyclerView) view.findViewById(R.id.homelist);
         pendingList.setLayoutManager(new LinearLayoutManager(getContext()));
         String status="P";
-        networkConnection.getJobData(status, new VolleyCallback() {
+        final ProgressDialog dialog=new ProgressDialog(getActivity());
+        dialog.setTitle("please wait....");dialog.show();
+        networkConnection.getJobData(status,null, new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
+                dialog.dismiss();
                 adapter=new JobListAdaptor(result);
 
         pendingList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));

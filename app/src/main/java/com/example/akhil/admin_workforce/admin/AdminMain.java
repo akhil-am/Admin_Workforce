@@ -5,7 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -14,16 +17,26 @@ import com.example.akhil.admin_workforce.extras.FragmentInflater;
 
 public class AdminMain extends AppCompatActivity {
     NavigationView navigationView;
+    DrawerLayout drawer;
     // index to identify current nav menu item
     public static int navItemIndex = 0;
-   static Fragment fragment=new Fragment();
+   static Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main);
+        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-
+drawer= (DrawerLayout) findViewById(R.id.drawer);
+        fragment= new AdminHome();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentInflater fInflater=new FragmentInflater(AdminMain.this,fragment,fragmentManager);
+        fInflater.loadFragment();
         setupNavigationView();
         //loadFragment();
 
@@ -51,7 +64,7 @@ public class AdminMain extends AppCompatActivity {
                         navItemIndex = 0;
                         break;
                 }
-
+                drawer.closeDrawers();
                 fragment = getCurrentFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentInflater fInflater=new FragmentInflater(AdminMain.this,fragment,fragmentManager);

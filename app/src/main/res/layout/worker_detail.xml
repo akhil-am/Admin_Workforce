@@ -16,12 +16,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:weightSum="1">
+
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                app:srcCompat="@mipmap/ic_launcher"
                 android:id="@+id/imageView2"
-                android:layout_weight="0.10" />
+                android:layout_width="150dp"
+                android:layout_height="135dp"
+                app:srcCompat="@mipmap/ic_launcher" />
         </LinearLayout>
 
 
@@ -32,10 +32,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:text="TextView"
+                android:id="@+id/a_client_id"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/a_client_id" />
+                android:text="TextView" />
 
             <TextView
                 android:text="TextView"
@@ -92,18 +92,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
-            android:text=" @string/previous_works"
-            android:layout_height="wrap_content"
-            android:id="@+id/a_previous"
-            android:layout_width="200dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
-            android:text="@string/assign_job"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/a_assign"
-            android:layout_weight="1" />
+            <Button
+                android:id="@+id/a_previous"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:text="@string/previous_works" />
+
+            <Button
+                android:id="@+id/a_assign"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="8dp"
+                android:layout_weight="0.03"
+                android:text="@string/assign_job" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 

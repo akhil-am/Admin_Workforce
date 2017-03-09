@@ -33,6 +33,7 @@ public class WorkerListAdaptor extends RecyclerView.Adapter<WorkerListAdaptor.My
         DataClass dataclass= workerList.get(position);
        // holder.id.setText(dataclass.getWorkerId());
         holder.jobTitle.setText(dataclass.getWorkerName());
+
     }
 
     @Override
@@ -48,4 +49,65 @@ public class WorkerListAdaptor extends RecyclerView.Adapter<WorkerListAdaptor.My
             jobTitle = (TextView) itemView.findViewById(R.id.jobtitle);
         }
     }
+
+
+
+      /** Filter Logic
+     **/
+    public void animateTo(List<DataClass> models) {
+        applyAndAnimateRemovals(models);
+        applyAndAnimateAdditions(models);
+        applyAndAnimateMovedItems(models);
+
+    }
+
+    private void applyAndAnimateRemovals(List<DataClass> newModels) {
+
+        for (int i = workerList.size() - 1; i >= 0; i--) {
+            final DataClass model = workerList.get(i);
+            if (!newModels.contains(model)) {
+                removeItem(i);
+            }
+        }
+    }
+
+    private void applyAndAnimateAdditions(List<DataClass> newModels) {
+
+        for (int i = 0, count = newModels.size(); i < count; i++) {
+            final DataClass model = newModels.get(i);
+            if (!newModels.contains(model)) {
+                addItem(i, model);
+            }
+        }
+    }
+    private void applyAndAnimateMovedItems(List<DataClass> newModels) {
+
+        for (int toPosition = newModels.size() - 1; toPosition >= 0; toPosition--) {
+            final DataClass model = newModels.get(toPosition);
+            final int fromPosition = workerList.indexOf(model);
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition);
+            }
+        }
+    }
+
+    public DataClass removeItem(int position) {
+        final DataClass model = workerList.remove(position);
+        notifyItemRemoved(position);
+        return model;
+    }
+
+    public void addItem(int position, DataClass model) {
+        workerList.add(position, model);
+        notifyItemInserted(position);
+    }
+
+    public void moveItem(int fromPosition, int toPosition) {
+        final DataClass model = workerList.remove(fromPosition);
+        workerList.add(toPosition, model);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
 }
+
+

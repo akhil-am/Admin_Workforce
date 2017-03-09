@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.admin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,12 +30,20 @@ import java.util.List;
  */
 
 public class AdminHome extends Fragment {
-    RecyclerView homeList;
+   RecyclerView homeList;
     RecyclerView.Adapter adapter;
     NetworkConnection networkConnection=new NetworkConnection(getContext());
     DataClass dataClass=new DataClass();
     Fragment fragment=new JobDescription();
+
     //List<DataClass> result=new ArrayList<>();
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Nullable
     @Override
@@ -44,9 +53,12 @@ public class AdminHome extends Fragment {
         homeList = (RecyclerView) view.findViewById(R.id.homelist);
         homeList.setLayoutManager(new LinearLayoutManager(getContext()));
         String status="A";
-        networkConnection.getJobData(status, new VolleyCallback() {
+       final ProgressDialog dialog=new ProgressDialog(getActivity());
+        dialog.setTitle("please wait....");dialog.show();
+        networkConnection.getJobData(status,"0",new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
+                dialog.dismiss();
                 adapter=new JobListAdaptor(result);
                 Log.d("adaptor....", String.valueOf(adapter.getItemCount()));
 

@@ -15,17 +15,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawer"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/linear"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorAccent"
+                android:id="@+id/toolbar">
 
-    
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+
+
+
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/fr">
+        <!--android:layout_marginTop="?attr/actionBarSize"-->
         <include layout="@layout/admin_home">
 
         </include>
     </FrameLayout>
+    </LinearLayout>
     <!--navigation-->
     <android.support.design.widget.NavigationView
         android:layout_width="250dp"
@@ -37,5 +59,6 @@
         android:id="@+id/nav_view">
 
     </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>
     <!--</LinearLayout>-->

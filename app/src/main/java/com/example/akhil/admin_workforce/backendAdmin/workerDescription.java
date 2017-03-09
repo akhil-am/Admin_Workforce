@@ -1,9 +1,11 @@
 package com.example.akhil.admin_workforce.backendAdmin;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.akhil.admin_workforce.R;
 import com.example.akhil.admin_workforce.extras.DataClass;
+import com.example.akhil.admin_workforce.extras.FragmentInflater;
 import com.example.akhil.admin_workforce.network.NetworkConnection;
 import com.example.akhil.admin_workforce.network.VolleyCallback;
 
@@ -32,10 +35,13 @@ public class WorkerDescription extends Fragment {
         final View view= inflater.inflate(R.layout.worker_detail,container,false);
         String murl="http://avipsr.96.lt/workerdata.php";
         String id=getArguments().getString("id");
+        final ProgressDialog dialog=new ProgressDialog(getActivity());
+        dialog.setTitle("please wait....");dialog.show();
         networkConnection.getWorkerData(id, murl, new VolleyCallback() {
             @Override
             public void onSuccessResponse(List<DataClass> result) {
-                DataClass data=result.get(0);
+                dialog.dismiss();
+                final DataClass data=result.get(0);
                 TextView clientId= (TextView) view.findViewById(R.id.a_client_id);
                 TextView clientName= (TextView) view.findViewById(R.id.a_name);
                 TextView clientDesignation= (TextView) view.findViewById(R.id.a_designation);
@@ -50,7 +56,13 @@ public class WorkerDescription extends Fragment {
                 previous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Bundle bundle=new Bundle();
+                        bundle.putString("id",data.getWorkerId());
+                        Fragment fragment= new PreviousJob();
+                        fragment.setArguments(bundle);
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentInflater fragmentInflater=new FragmentInflater(getContext(), fragment,fragmentManager);
+                        fragmentInflater.loadFragment();
                    }
                 });
 
