@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.backendAdmin;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,7 @@ import com.example.akhil.admin_workforce.network.VolleyCallback;
 import java.util.List;
 
 /**
- * Created by akhil on 08/03/17.
+ * Created by akhil on 01/03/17.
  */
 
 public class PreviousJob extends Fragment {
@@ -37,9 +38,12 @@ public class PreviousJob extends Fragment {
         View view=inflater.inflate(R.layout.admin_home,container,false);
         previous = (RecyclerView) view.findViewById(R.id.homelist);
         previous.setLayoutManager(new LinearLayoutManager(getContext()));
+        final ProgressDialog dialog=new ProgressDialog(getActivity());
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.getJobData("C", getArguments().getString("id"), new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
+                dialog.dismiss();
                 adapter=new JobListAdaptor(result);
                 previous.setAdapter(adapter);
                 previous.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
@@ -49,7 +53,8 @@ public class PreviousJob extends Fragment {
                         DataClass id= result.get(position);
                         String mJobDes=id.getJobDes();
                         Bundle bundle=new Bundle();
-                        Fragment fragment=new PreviousJob();
+                        bundle.putString("jobdes",mJobDes);
+                        Fragment fragment=new PreviousDescription();
                         fragment.setArguments(bundle);
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         FragmentInflater fragmentInflater=new FragmentInflater(getContext(), fragment,fragmentManager);

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.example.akhil.admin_workforce.R;
 
 /**
- * Created by akhil on 09/03/17.
+ * Created by akhil on 02/03/17.
  */
 
 public class PreviousDescription extends Fragment {
@@ -26,7 +26,8 @@ public class PreviousDescription extends Fragment {
         mJobDes=getArguments().getString("jobdes");
         textView.setText(mJobDes);
         Button search= (Button) view.findViewById(R.id.search_worker);
-        //search.setVisibility(view.GONE);
+        // use the layout and the search button is disabled
+        search.setVisibility(View.GONE);
         return view;
     }
 }

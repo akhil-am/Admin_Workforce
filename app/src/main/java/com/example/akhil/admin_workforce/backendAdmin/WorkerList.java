@@ -32,11 +32,9 @@ import java.util.List;
 public class WorkerList extends Fragment {
     RecyclerView workList;
     RecyclerView.Adapter adapter;
-    DataClass dataClass=new DataClass();
     NetworkConnection networkConnection=new NetworkConnection(getContext());
     private  String mLocationId;
     private String mDesignationId;
-    //List<DataClass> workerList= new ArrayList<>();
     DataClass mData=new DataClass(); List<DataClass> dummy;
     Bundle bundle= new Bundle();
     @Override
@@ -69,10 +67,8 @@ dialog.dismiss();
                     data=result.get(i);
 
                    Log.v("data", String.valueOf(result.get(i).getWorkerId()));
-//                    Log.v("mid",mId);
-//                    Log.v("mlocation",mDesignationId);
-//                    Log.v("mdes",mDesignationId);
 
+// filer the data
                     if ((data.getLocationId().equals(mLocationId))&&(data.getDesignationId().equals(mDesignationId))) {
 
                         String id = data.getWorkerId();
@@ -83,8 +79,7 @@ dialog.dismiss();
                         mData.setWorkerName(name);
                         dummy.add(mData);
                     }
-                    // dataClass.setDummy(dummy);
-                    // bundle.putCharSequenceArrayList("list",dummy);
+
 
 
 

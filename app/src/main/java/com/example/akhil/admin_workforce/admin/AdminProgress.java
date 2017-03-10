@@ -40,10 +40,11 @@ public class AdminProgress extends Fragment {
         View view=inflater.inflate(R.layout.admin_home,container,false);
         pendingList = (RecyclerView) view.findViewById(R.id.homelist);
         pendingList.setLayoutManager(new LinearLayoutManager(getContext()));
+
         String status="P";
         final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
-        networkConnection.getJobData(status,null, new VolleyCallback() {
+        dialog.setMessage("please wait....");dialog.show();
+        networkConnection.getJobData(status,"0", new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
                 dialog.dismiss();
@@ -55,13 +56,9 @@ public class AdminProgress extends Fragment {
             public void onClick(View view, int position) {
                 DataClass id= result.get(position);
                 String mId=id.getJobId();
-                String mLocationId=id.getLocationId();
-                String mDesignationId=id.getDesignationId();
 
                 Bundle bundle=new Bundle();
                 bundle.putString("id",mId);
-               // bundle.putString("locationId",mLocationId);
-               // bundle.putString("designationId",mDesignationId);
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentInflater fragmentInflater=new FragmentInflater(getContext(), fragment,fragmentManager);

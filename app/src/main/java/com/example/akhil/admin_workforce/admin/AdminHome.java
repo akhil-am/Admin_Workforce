@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,10 +34,8 @@ public class AdminHome extends Fragment {
    RecyclerView homeList;
     RecyclerView.Adapter adapter;
     NetworkConnection networkConnection=new NetworkConnection(getContext());
-    DataClass dataClass=new DataClass();
     Fragment fragment=new JobDescription();
 
-    //List<DataClass> result=new ArrayList<>();
 
 
     @Override
@@ -51,10 +50,11 @@ public class AdminHome extends Fragment {
         View view=inflater.inflate(R.layout.admin_home,container,false);
 
         homeList = (RecyclerView) view.findViewById(R.id.homelist);
-        homeList.setLayoutManager(new LinearLayoutManager(getContext()));
+        homeList.setLayoutManager(new GridLayoutManager(getContext(),1));
+        // getting Available jobs as status A
         String status="A";
        final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.getJobData(status,"0",new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
@@ -64,8 +64,9 @@ public class AdminHome extends Fragment {
 
 
 
-        homeList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
-        homeList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), homeList, new RecyclerTouchListener.ClickListener() {
+                homeList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));
+                homeList.setItemAnimator(new DefaultItemAnimator());
+                homeList.addOnItemTouchListener(new RecyclerTouchListener(getContext(), homeList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 DataClass id= result.get(position);
@@ -73,15 +74,17 @@ public class AdminHome extends Fragment {
                 String mLocationId=id.getLocationId();
                 String mDesignationId=id.getDesignationId();
                 String mJobDes=id.getJobDes();
-//                Intent intent=new Intent(getActivity(), JobDescription.class);
-//                intent.putExtra("id",mId);
-//                startActivity(intent);
                 Bundle bundle=new Bundle();
+
+                //Set the data and pass to next fragment job description
+
                 bundle.putString("id",mId);
                 bundle.putString("jobdes",mJobDes);
                 bundle.putString("locationId",mLocationId);
                 bundle.putString("designationId",mDesignationId);
                 fragment.setArguments(bundle);
+
+                //fragment inflator
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentInflater fragmentInflater=new FragmentInflater(getContext(), fragment,fragmentManager);
                 fragmentInflater.loadFragment();
@@ -99,9 +102,4 @@ public class AdminHome extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
 }

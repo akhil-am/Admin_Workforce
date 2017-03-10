@@ -1,5 +1,6 @@
 package com.example.akhil.admin_workforce.network;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -10,7 +11,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.akhil.admin_workforce.admin.AdminMain;
 import com.example.akhil.admin_workforce.extras.DataClass;
@@ -36,16 +36,23 @@ public class NetworkConnection {
         this.context=context;
 
     }
-//    ProgressDialog pd=new ProgressDialog(context);
-private  void login(){
-   // pd.setMessage("please wait logging");pd.show();
-    String mLoginUrl = "";
-    JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(Request.Method.GET, mLoginUrl, null, new Response.Listener<JSONObject>() {
+// Login
+public   void login(final String uname, final String pass){
+    String mLoginUrl = "http://avipsr.96.lt/login.php";
+    Log.v("uname",uname+pass);
+
+    StringRequest stringRequest= new StringRequest(Request.Method.POST, mLoginUrl, new Response.Listener<String>() {
         @Override
-        public void onResponse(JSONObject response) {
-//pd.hide();
+        public void onResponse(String response) {
             try {
-                Boolean mResponse= response.getBoolean("code");
+                ProgressDialog progressDialog=new ProgressDialog(context);
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                JSONObject jsonObject= new JSONObject(response);
+                Boolean mResponse= jsonObject.getBoolean("code");
+                Log.v("Boolean",mResponse.toString());
+                // if code is true loggin successfull
                 if(mResponse){
                     Intent intent = new Intent(context, AdminMain.class);
                     context.startActivity(intent);
@@ -53,25 +60,32 @@ private  void login(){
                 }
                 else Toast.makeText(context, "login failed", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-
                 e.printStackTrace();
+            }catch (NullPointerException e){
+                Toast.makeText(context, "No data available ", Toast.LENGTH_LONG).show();
             }
-
         }
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
 
         }
-    });
-
+    }){
+        @Override
+        protected Map<String, String> getParams() throws AuthFailureError {
+            Map<String,String> params= new HashMap<>();
+            params.put("uname",uname);
+            params.put("pass",pass);
+            return params;
+        }
+    };
+    AppController.getInstance().addToRequestQueue(stringRequest);
 }
 
+
+//get the job data
    public void getJobData(final String status, final String id, final VolleyCallback callback) {
        mList = new ArrayList<DataClass>();
-       //  pd.setMessage("Fetching data..");
-       // pd.show();
-       final String temp = status;
        String mDataFetchUrl = "http://www.avipsr.96.lt/test.php";
        Log.v(".....", "get");
 
@@ -99,17 +113,18 @@ private  void login(){
                            mList.add(dataClass);
                            Log.v("mlist", mList.toString());
                            Log.v("......", id + jobDetail);
-//                           DataClass da = new DataClass();
-//                           da.setmList(mList);
-
 
                        }
                    } catch (JSONException e) {
                        e.printStackTrace();
+                   }catch (NullPointerException e){
+                       Toast.makeText(context, "No data available ", Toast.LENGTH_LONG).show();
                    }
 //
                } catch (JSONException e) {
                    e.printStackTrace();
+               }catch (NullPointerException e){
+                   Toast.makeText(context, "No data available ", Toast.LENGTH_LONG).show();
                }
                callback.onSuccessResponse(mList);
            }
@@ -122,7 +137,7 @@ private  void login(){
            @Override
            protected Map<String, String> getParams() throws AuthFailureError {
                Map<String,String> params= new HashMap<>();
-               params.put("status",temp);
+               params.put("status", status);
               params.put("id",id);
                return params;
            }
@@ -133,12 +148,10 @@ private  void login(){
 
    }
 
+// search the worker for the job
     public void searchWorker(final VolleyCallback callback){
         mList=new ArrayList<DataClass>();
-       // mList.clear();
         String mDataFetchUrl = "http://www.avipsr.96.lt/worklist.php";
-        Log.v(".....","list");
-
 
 JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
     @Override
@@ -160,11 +173,12 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
                 dataClass.setLocationId(locationId);
                 dataClass.setDesignationId(designationId);
                 mList.add(dataClass);
-                //dataClass.setwList(mList);
 
             }
             catch (JSONException e) {
                 e.printStackTrace();
+            }catch (NullPointerException e){
+                Toast.makeText(context, "No data available ", Toast.LENGTH_LONG).show();
             }
         }
         callback.onSuccessResponse(mList);
@@ -178,10 +192,9 @@ JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.GET, mData
 });
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
     }
-
+// get the worker for the job
    public void getWorkerData(final String id, String mDataFetchUrl,final VolleyCallback callback){
 mList=new ArrayList<>();
-Log.v("last id",id);
 
        StringRequest stringRequest=new StringRequest(Request.Method.POST, mDataFetchUrl, new Response.Listener<String>() {
            @Override
@@ -203,14 +216,25 @@ Log.v("last id",id);
                        dataClass.setWorkerName(name);
                        dataClass.setLocationId(locationId);
                        dataClass.setDesignationId(designationId);
+
                        if(jsonObject.has("work_detail")){
                            String jobData=jsonObject.getString("work_detail");
                            dataClass.setJobData(jobData);
+                       }
+                       if(jsonObject.has("location")){
+                           String location=jsonObject.getString("location");
+                           dataClass.setLocation(location);
+                       }
+                       if(jsonObject.has("job_designation")){
+                           String designation=jsonObject.getString("job_designation");
+                           dataClass.setDesignation(designation);
                        }
                        mList.add(dataClass);
                    }
                } catch (JSONException e) {
                    e.printStackTrace();
+               }catch (NullPointerException e){
+                   Toast.makeText(context, "No data available ", Toast.LENGTH_LONG).show();
                }
                callback.onSuccessResponse(mList);
            }
@@ -229,71 +253,4 @@ Log.v("last id",id);
        };
        AppController.getInstance().addToRequestQueue(stringRequest);
    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-//    JsonArrayRequest jsonArrayRequest=new JsonArrayRequest(Request.Method.POST, mDataFetchUrl, null, new Response.Listener<JSONArray>() {
-//           @Override
-//           public void onResponse(JSONArray response) {
-//               Log.v("last work", String.valueOf(response));
-//               for (int i = 0; i < response.length(); i++) {
-//                   try {
-//                       JSONObject jsonObject =response.getJSONObject(i);
-//                       String mId=jsonObject.getString("id");
-//                       Log.v("json id",mId);
-//                       String name=jsonObject.getString("name");
-//                       String locationId=jsonObject.getString("location_id");
-//                       String designationId=jsonObject.getString("designation_id");
-//
-//                       DataClass dataClass=new DataClass();
-//                       dataClass.setWorkerId(mId);
-//                       dataClass.setWorkerName(name);
-//                       dataClass.setLocationId(locationId);
-//                       dataClass.setDesignationId(designationId);
-//                       if(jsonObject.has("work_detail")){
-//                           String jobData=jsonObject.getString("work_detail");
-//                           dataClass.setJobData(jobData);
-//                       }
-//                       mList.add(dataClass);
-//                      // dataClass.setwList(mList);
-//                   } catch (JSONException e) {
-//                       e.printStackTrace();
-//                   }
-//               }
-//               callback.onSuccessResponse(mList);
-//           }
-//       }, new Response.ErrorListener() {
-//           @Override
-//           public void onErrorResponse(VolleyError error) {
-//
-//           }
-//       }){
-//           @Override
-//           protected Map<String, String> getParams() throws AuthFailureError {
-//               Map<String,String> params= new HashMap<>();
-//               params.put("id",id);
-//               return params;
-//           }
-//       };
-//
-//       AppController.getInstance().addToRequestQueue(jsonArrayRequest);
-//   }
-
-
-
 }

@@ -51,8 +51,8 @@ public class WorkerDescription extends Fragment {
 
                 clientId.setText(data.getWorkerId());
                 clientName.setText(data.getWorkerName());
-                clientDesignation.setText(data.getDesignationId());
-                clientLocation.setText(data.getLocationId());
+                clientDesignation.setText(data.getDesignation());
+                clientLocation.setText(data.getLocation());
                 previous.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

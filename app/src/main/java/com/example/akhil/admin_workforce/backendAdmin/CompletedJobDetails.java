@@ -1,4 +1,4 @@
-package com.example.akhil.admin_workforce.admin;
+package com.example.akhil.admin_workforce.backendAdmin;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ public class CompletedJobDetails extends Fragment {
         final View view=inflater.inflate(R.layout.completed_job_detail,container,false);
         String mid=getArguments().getString("id");
         final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.getWorkerData(mid, mUrl, new VolleyCallback() {
             @Override
             public void onSuccessResponse(List<DataClass> result) {

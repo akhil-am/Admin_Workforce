@@ -34,7 +34,7 @@ public class PendingJobDetails extends Fragment {
 
         String mid=getArguments().getString("id");
         final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.getWorkerData(mid, mUrl, new VolleyCallback() {
             @Override
             public void onSuccessResponse(List<DataClass> result) {

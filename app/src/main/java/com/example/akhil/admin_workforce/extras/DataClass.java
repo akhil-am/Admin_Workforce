@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class DataClass {
-    String jobId;
+    String jobId,designation,location;
     String JobTitle,locationId,designationId,workerId,workerName,JobData,JobDes;
      private static List<DataClass> mList=new ArrayList<>();
      static List<DataClass> dummy=new ArrayList<DataClass>();
@@ -45,6 +45,14 @@ public class DataClass {
         return JobDes;
     }
 
+    public String getDesignation() {
+        return designation;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
     public void setJobId(String jobId) {
         this.jobId = jobId;
     }
@@ -75,6 +83,14 @@ public class DataClass {
 
     public void setJobDes(String jobDes) {
         JobDes = jobDes;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public List<DataClass> getmList() {
