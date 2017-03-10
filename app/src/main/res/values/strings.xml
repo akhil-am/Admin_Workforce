@@ -6,4 +6,6 @@
     <string name="report">Report</string>
     <string name="previous_works"><![CDATA[<< previous works]]></string>
     <string name="assign_job"><![CDATA[assign job >>]]></string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

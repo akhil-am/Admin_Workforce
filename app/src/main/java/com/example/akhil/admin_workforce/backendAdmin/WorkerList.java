@@ -56,7 +56,7 @@ public class WorkerList extends Fragment {
         Log.v("mLocationId",mLocationId);
         Log.v("mDesignationId",mDesignationId);
       final  ProgressDialog dialog= new ProgressDialog(getContext());
-        dialog.setTitle("please wait....");dialog.show();
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.searchWorker(new VolleyCallback() {
             @Override
             public void onSuccessResponse(final List<DataClass> result) {
@@ -84,12 +84,6 @@ dialog.dismiss();
 
 
                 }
-
-
-
-
-
-
         adapter=new WorkerListAdaptor(dummy);
         workList.setAdapter(adapter);
         workList.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayout.VERTICAL));

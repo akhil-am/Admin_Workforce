@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,6 +35,10 @@ public class AdminMain extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 drawer= (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
         fragment= new AdminHome();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentInflater fInflater=new FragmentInflater(AdminMain.this,fragment,fragmentManager);
@@ -95,6 +101,16 @@ drawer= (DrawerLayout) findViewById(R.id.drawer);
         }
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
 

@@ -36,7 +36,7 @@ public class WorkerDescription extends Fragment {
         String murl="http://avipsr.96.lt/workerdata.php";
         String id=getArguments().getString("id");
         final ProgressDialog dialog=new ProgressDialog(getActivity());
-        dialog.setTitle("please wait....");dialog.show();
+        dialog.setMessage("please wait....");dialog.show();
         networkConnection.getWorkerData(id, murl, new VolleyCallback() {
             @Override
             public void onSuccessResponse(List<DataClass> result) {

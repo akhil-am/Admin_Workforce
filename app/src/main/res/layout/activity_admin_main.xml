@@ -1,18 +1,8 @@
-<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical">-->
-    <!--<android.support.v7.widget.Toolbar-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:background="#ffdef1">-->
-    <!--</android.support.v7.widget.Toolbar>-->
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer"
@@ -62,3 +52,6 @@
 
 </android.support.v4.widget.DrawerLayout>
     <!--</LinearLayout>-->
+
+
+</android.support.design.widget.CoordinatorLayout>
