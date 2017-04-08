@@ -11,6 +11,7 @@ public class Splash extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
         int SPLASH_TIME_OUT = 3000;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
